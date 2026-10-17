@@ -1,0 +1,40 @@
+%% chapters/ch3_method.tex
+
+\chapter{研究方法}
+\label{ch:method}
+
+\section{系統架構}
+\label{sec:architecture}
+
+這一節說明整體流程。並排圖請放在同一個 \verb|figure| 環境裡，
+用 \verb|\mpfig| 系列巨集，中間以 \verb|\hfill| 分隔：
+
+\begin{figure}[htbp]
+  \centering
+  \mpfig{0.45}{figures/example_fig}{左側子圖說明。}{fig:panel-left}%
+  \hfill
+  \mpfig{0.45}{figures/example_fig}{右側子圖說明。}{fig:panel-right}
+\end{figure}
+
+圖 \ref{fig:panel-left} 與圖 \ref{fig:panel-right} 並排顯示。
+
+\section{實驗設計}
+\label{sec:experiment-design}
+
+表格請用一般的 \verb|table| 環境，表的標題一律放在表格上方：
+
+\begin{table}[htbp]
+  \centering
+  \caption{示範用表格。實際撰寫時請填入自己的資料。}
+  \label{tab:example}
+  \begin{tabular}{lrr}
+    \hline
+    項目 & 數值一 & 數值二 \\
+    \hline
+    條件 A & 0.00 & 0.00 \\
+    條件 B & 0.00 & 0.00 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+表 \ref{tab:example} 列出實驗條件。

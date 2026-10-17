@@ -1,0 +1,79 @@
+%% structure/coverbridge.tex -- the printed spine, as a stand-alone document.
+%%
+%% Build it with:  thesis-cli build --target spine
+%%
+%% A second, independent document with its own \documentclass.  It reads
+%% config/names.tex like the thesis does (plus config/cjk.tex and
+%% config/definitions.tex), so the title on the spine always matches the
+%% title on the cover.
+%%
+%% The \input paths below are relative to the *project root*, because that
+%% is where thesis-cli runs the engine.  Compiled from inside structure/,
+%% this file will not find them.
+%%
+%% Landscape output through the latex+dvipdfmx route needs dvipdfmx -l, and
+%% forgetting that flag is the classic way to get a spine rotated the wrong
+%% way.  The --target spine option adds it automatically.
+%%
+%% Rotation rather than vertical typesetting
+%% -----------------------------------------
+%% The text is rotated as a block with \rotatebox.  Vertical setting
+%% character by character needs CJKvert, which exists only on the 8-bit
+%% CJK route; rotating the box works the same on every engine, with the
+%% characters lying on their side rather than standing upright.
+%% \thesisSpineBaselineFix raises the \parbox slightly before it is
+%% rotated.  The right value depends on the font, so check it once against
+%% your own CJK font and leave it alone afterwards.
+
+\documentclass[12pt,a4paper,landscape]{article}
+
+%% The same driver choice as in thesis.tex: on the latex+dvipdfmx route,
+%% graphicx (which does the rotation below) gets the dvipdfmx driver
+%% instead of falling back to dvips.
+\usepackage{iftex}
+\ifPDFTeX\ifnum\pdfoutput<1
+  \PassOptionsToPackage{dvipdfmx}{graphicx}
+\fi\fi
+
+\usepackage[
+  tmargin=2.5cm, bmargin=3cm,
+  lmargin=2.5cm, rmargin=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{rotating}
+\input{config/cjk.tex}
+
+\pagestyle{empty}
+
+%% Baseline compensation for the rotated title block.
+\newlength{\thesisSpineBaselineFix}
+\setlength{\thesisSpineBaselineFix}{1.75pt}
+
+%% Width of the box the title is set in before rotation; increase it for a
+%% long title, decrease it for a short one.
+\newlength{\thesisSpineTitleWidth}
+\setlength{\thesisSpineTitleWidth}{13.5cm}
+
+%% Defaults, then the project's own values.  definitions.tex renames
+%% \chaptername and \bibname, which the report class has and article does
+%% not; \renewcommand on a missing command stops the build.
+\providecommand{\chaptername}{}
+\providecommand{\bibname}{}
+\input{config/definitions.tex}
+\input{config/names.tex}
+
+\begin{document}
+\ThesisBeginCJK
+
+\begin{center}
+  \rotatebox{90}{%
+    \raisebox{\thesisSpineBaselineFix}{%
+      \parbox{\thesisSpineTitleWidth}{%
+        \centering
+        \large
+        \univCname\quad \deptCname\quad \degreeCname 論文\quad
+        \cTitle\quad \myCname\quad
+        中華民國\cYear 年\cMonth 月}}}%
+\end{center}
+
+\ThesisEndCJK
+\end{document}

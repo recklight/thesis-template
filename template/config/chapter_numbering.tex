@@ -1,0 +1,72 @@
+%% config/chapter_numbering.tex -- the three chapter numbering styles.
+%%
+%% Each style is a single named macro.  Selecting one is a setting in
+%% thesis.toml ([template] toc_style = "arabic" | "cjk" | "cjk_full"), which
+%% 'thesis-cli build' turns into one line in config/generated.tex, so
+%% switching styles never means editing this file.
+%%
+%%   Style        Heading        Table of contents   Number column
+%%   -----------  -------------  ------------------  -------------
+%%   arabic       \chaptername 1 1.                  1.4em
+%%   cjk          一、           一、                2em
+%%   cjk_full     第一章         第一章、            3em
+%%
+%% The arabic heading uses \chaptername from config/definitions.tex: "章 1"
+%% with \ThesisLabelsChinese, "Chapter 1" with \ThesisLabelsEnglish.  The
+%% number column width follows the class's rule: characters + 1, in em,
+%% never below 1.4em.
+%%
+%% Appendix chapters are lettered.  structure/backpages.tex calls
+%% \ThesisAppendixNumbering right after \appendix, so every style shows them
+%% as "附錄 A" (\appendixname A).
+
+%% ---- 1. Arabic numerals ------------------------------------------
+\newcommand{\ThesisTocStyleArabic}{%
+  \renewcommand{\countermapping}[1]{##1}%
+  \renewcommand{\prechaptername}{\chaptername\space}%
+  \renewcommand{\postchaptername}{}%
+  \renewcommand{\tocprechaptername}{}%
+  \renewcommand{\tocpostchaptername}{.}%
+  \setlength{\tocChNumberWidth}{1.4em}%
+}
+
+%% ---- 2. Chinese numerals, bare -----------------------------------
+\newcommand{\ThesisTocStyleCJK}{%
+  \renewcommand{\countermapping}[1]{\ThesisNumberToCJK{##1}}%
+  \renewcommand{\prechaptername}{}%
+  \renewcommand{\postchaptername}{、}%
+  \renewcommand{\tocprechaptername}{}%
+  \renewcommand{\tocpostchaptername}{、}%
+  \setlength{\tocChNumberWidth}{2em}%
+}
+
+%% ---- 3. Chinese numerals, full form ------------------------------
+\newcommand{\ThesisTocStyleCJKFull}{%
+  \renewcommand{\countermapping}[1]{\ThesisNumberToCJK{##1}}%
+  \renewcommand{\prechaptername}{第}%
+  \renewcommand{\postchaptername}{章}%
+  \renewcommand{\tocprechaptername}{第}%
+  \renewcommand{\tocpostchaptername}{章、}%
+  \setlength{\tocChNumberWidth}{3em}%
+}
+
+%% ---- Appendix ----------------------------------------------------
+%% After \appendix, \thechapter is a letter, which \ThesisNumberToCJK
+%% cannot turn into a numeral (TeX stops with "Missing number").  The
+%% mapping goes back to the identity and the appendix name replaces the
+%% chapter affixes.  The table of contents is typeset before the appendix
+%% is reached, so the wider number column ("附錄 M" plus 1em) is set from
+%% inside the .toc itself.
+\newcommand{\ThesisAppendixNumbering}{%
+  \renewcommand{\countermapping}[1]{##1}%
+  \renewcommand{\prechaptername}{\appendixname\space}%
+  \renewcommand{\postchaptername}{}%
+  \renewcommand{\tocprechaptername}{\appendixname\space}%
+  \renewcommand{\tocpostchaptername}{}%
+  \addtocontents{toc}{%
+    \protect\settowidth{\protect\tocChNumberWidth}{\appendixname\ M\quad}}%
+}
+
+%% Default style.  thesis.tex reads config/generated.tex further down,
+%% and the style set there from thesis.toml replaces this one.
+\ThesisTocStyleCJKFull

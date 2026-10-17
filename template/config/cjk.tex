@@ -1,0 +1,74 @@
+%% config/cjk.tex -- Chinese typesetting, selected from the engine.
+%%
+%% Which CJK package can be loaded depends on the engine, so this file asks
+%% the iftex package which engine is running.  There are two routes:
+%%
+%%   XeLaTeX             ->  xeCJK, with a system font by family name
+%%   pdfLaTeX / latex    ->  CJKutf8 + CJKnumb, with Type 1 CJK fonts
+%%
+%% LuaLaTeX is not one of the routes: xeCJK runs under XeTeX only, and
+%% thesis-cli does not offer lualatex as an engine.
+%%
+%% Whichever route is taken, the rest of the template only ever uses
+%% \ThesisBeginCJK, \ThesisEndCJK and \ThesisNumberToCJK.
+
+\usepackage{iftex}
+
+%% ------------------------------------------------------------------
+%% Chinese numerals without an extra package
+%% ------------------------------------------------------------------
+%% Used on the Unicode route, where CJKnumb is not available.  From 30 on
+%% the number comes out in Arabic digits.  No thesis has that many
+%% chapters, and stopping at 29 keeps the definition short enough to check
+%% by eye.
+\newcommand{\ThesisCJKDigit}[1]{%
+  \ifcase\numexpr#1\relax
+    零\or 一\or 二\or 三\or 四\or 五\or 六\or 七\or 八\or 九\fi}
+
+\newcommand{\ThesisNumberToCJKFallback}[1]{%
+  \ifnum\numexpr#1\relax<10
+    \ThesisCJKDigit{#1}%
+  \else\ifnum\numexpr#1\relax=10
+    十%
+  \else\ifnum\numexpr#1\relax<20
+    十\ThesisCJKDigit{#1-10}%
+  \else\ifnum\numexpr#1\relax=20
+    二十%
+  \else\ifnum\numexpr#1\relax<30
+    二十\ThesisCJKDigit{#1-20}%
+  \else
+    \number\numexpr#1\relax
+  \fi\fi\fi\fi\fi}
+
+%% ------------------------------------------------------------------
+%% Font family name for XeLaTeX.
+%% ------------------------------------------------------------------
+%% Change this to a family that is actually installed on your machine and
+%% keep it in step with the deps.cjk_font key in thesis.toml, the name
+%% 'thesis-cli deps' checks.  Common choices:
+%%
+%%   Linux    Noto Serif CJK TC   |  AR PL UKai TW
+%%   Windows  MingLiU             |  DFKai-SB          |  Microsoft JhengHei
+%%   macOS    Songti TC           |  BiauKai
+\def\ThesisCJKMainFont{Noto Serif CJK TC}
+
+\ifPDFTeX
+  %% ---- 8-bit route: CJK package, Type 1 CJK fonts ----------------
+  \usepackage[utf8]{inputenc}
+  \usepackage{CJKutf8}
+  \usepackage{CJKnumb}
+  %% bsmi = Ming/Song, bkai = Kai. Change to suit your department's rules.
+  \def\ThesisCJKLegacyFont{bsmi}
+  \newcommand{\ThesisBeginCJK}{%
+    \begin{CJK}{UTF8}{\ThesisCJKLegacyFont}%
+    \CJKindent}
+  \newcommand{\ThesisEndCJK}{\end{CJK}}
+  \newcommand{\ThesisNumberToCJK}[1]{\CJKnumber{\numexpr#1\relax}}
+\else
+  %% ---- Unicode route: XeLaTeX ------------------------------------
+  \usepackage{xeCJK}
+  \expandafter\setCJKmainfont\expandafter{\ThesisCJKMainFont}%
+  \newcommand{\ThesisBeginCJK}{}
+  \newcommand{\ThesisEndCJK}{}
+  \newcommand{\ThesisNumberToCJK}[1]{\ThesisNumberToCJKFallback{#1}}
+\fi

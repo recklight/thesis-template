@@ -1,0 +1,35 @@
+%% structure/backpages.tex -- bibliography, appendix, vita.
+%%
+%% All three are on by default.  To drop one, comment out its lines here
+%% instead of emptying its content file.  An empty file still satisfies
+%% \input, so LaTeX says nothing about it, and the vita would come out as
+%% a heading over a blank page.  An \input that does not resolve is
+%% reported by 'thesis-cli check-refs'.
+%%
+%% The bibliography style and database are also declared in thesis.toml,
+%% and the two must agree; check-refs compares them and warns when they
+%% differ.
+
+%% ==================================================================
+%% Bibliography
+%% ==================================================================
+\clearpage
+\bibliographystyle{ieeetr}
+\bibliography{bib/references}
+\addcontentsline{toc}{chapter}{\bibname}
+
+%% ==================================================================
+%% Appendix
+%% ==================================================================
+\clearpage
+\appendix
+\ThesisAppendixNumbering
+\input{content/appendix.tex}
+
+%% ==================================================================
+%% Vita
+%% ==================================================================
+\clearpage
+\chapter*{\nameVita}
+\addcontentsline{toc}{chapter}{\nameVita}
+\input{content/vita.tex}

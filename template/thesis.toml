@@ -1,0 +1,66 @@
+# thesis.toml -- project settings read by thesis-cli.
+# Every path is relative to this file's directory.
+
+[project]
+# Main document. 'thesis-cli build' refuses any file without a preamble.
+main = "thesis.tex"
+
+[build]
+# One of: xelatex, pdflatex, latex+dvipdfmx
+engine = "xelatex"
+# latexmk decides how many passes the cross-references need.
+use_latexmk = true
+# Engine passes in the manual sequence used when latexmk is absent.
+max_passes = 4
+interaction = "nonstopmode"
+halt_on_error = true
+synctex = false
+# Build artefacts are kept out of the source tree.
+output_dir = "build"
+# Stand-alone landscape document for the printed spine.
+spine_source = "structure/coverbridge.tex"
+
+[bib]
+files = ["bib/references.bib"]
+style = "ieeetr"
+
+[figures]
+dirs = ["figures"]
+# Probe order for references written without an extension.
+extensions = [".pdf", ".png", ".jpg", ".jpeg", ".eps"]
+# Suffixes that mark generated graphics (epstopdf output).
+derived_suffixes = ["-eps-converted-to.pdf"]
+
+# Extra figure macros: macro name = 1-based index of the file-name argument.
+[figures.macros]
+
+[template]
+# Table of contents chapter numbering: arabic | cjk | cjk_full
+toc_style = "cjk_full"
+# Watermark placement: all | selected | off
+watermark = "all"
+watermark_image = "figures/watermark_placeholder.png"
+watermark_width = "5.1cm"
+watermark_x = "-1"
+watermark_y = "-6.2"
+# Default float placement for the figure macros.
+float_spec = "htbp"
+# Written by 'thesis-cli build'; do not edit it by hand.
+generated_file = "config/generated.tex"
+
+[clean]
+extra_patterns = ["*.bak", "*.asv", "Thumbs.db", ".DS_Store"]
+# The finished PDF is only removed when this is true or --outputs is given.
+remove_outputs = false
+
+[deps]
+# Family name for XeLaTeX; checked with fc-list.
+cjk_font = "Noto Serif CJK TC"
+# Metric files checked on the CJK package route (pdflatex, latex+dvipdfmx).
+legacy_font_files = ["bkai00mp.tfm", "bsmi00lp.tfm"]
+
+[stats]
+# Files under these directories carry prose, and so does any file that opens
+# a \chapter or \section; everything else is preamble.
+chapter_dir = "chapters"
+content_dir = "content"

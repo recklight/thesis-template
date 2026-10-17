@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+message: "如果你在研究中使用了本軟體，請依下列資訊引用。"
+title: "thesis-cli"
+abstract: "LaTeX template for a master's thesis in Traditional Chinese, with a build and audit CLI: compile, check references, resolve figures, count CJK words, clean up."
+type: software
+authors:
+  - name: "RL"
+version: "0.1.0"
+date-released: 2026-10-17
+license: MIT
+repository-code: "https://github.com/recklight/thesis-template"
+keywords:
+  - latex
+  - thesis
+  - bibtex
+  - cjk
+  - build-tool

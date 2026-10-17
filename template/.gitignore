@@ -1,0 +1,70 @@
+# Build artefacts of this thesis.
+#
+# 'thesis-cli init' copies this file into every new project, so a new
+# project starts with its sources and its artefacts kept apart.
+#
+# Every kind of file 'thesis-cli clean' deletes is ignored here, except
+# PostScript: the build never writes a .ps outside build/, so a .ps next to
+# the sources is a figure. A few things clean leaves alone are ignored as
+# well (ebb's bounding-box files, editor swap files, research data).
+
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.brf
+*.dvi
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.loa
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.spl
+*.synctex.gz
+*.toc
+*.vrb
+*.xdv
+missfont.log
+texput.log
+
+# epstopdf output: an artefact, not an asset.
+*-eps-converted-to.pdf
+
+# Bounding-box files from ebb. Never commit them: they record the absolute
+# path of the machine that generated them in a %%Title comment.
+*.bb
+*.xbb
+
+# Output directory used by 'thesis-cli build'.
+build/
+
+# The compiled thesis goes to build/, which is ignored above. Uncommenting
+# this ignores every other PDF as well, figures saved as .pdf included.
+# *.pdf
+
+# Editor and operating-system leftovers.
+*.bak
+*.asv
+*~
+*.swp
+Thumbs.db
+.DS_Store
+
+# Research data belongs outside the repository. Generate the figures from
+# it with your own scripts; do not commit the raw files. Plain .dat files
+# are not listed: pgfplots reads its tables from them.
+data/
+raw/
+*.mat
+*.wav
+*.npy
+*.npz
+*.xlsx

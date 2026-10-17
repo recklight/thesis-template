@@ -1,0 +1,29 @@
+%% config/headerfooter.tex -- running heads and page numbering.
+%%
+%% Pages are numbered in two sequences, as most departments require:
+%%
+%%   front matter   lower-case roman, restarted at i on the title page
+%%   main matter    arabic, restarted at 1 on the first chapter
+%%
+%% structure/frontpages.tex calls the switches defined here.  The page
+%% styles themselves (header and footer) are in config/watermark.tex,
+%% because the watermark is drawn from the header.
+\pagestyle{WaterMarkPage}
+
+%% Front matter: roman numerals, no chapter marks.
+\newcommand{\ThesisFrontMatterPages}{%
+  \pagenumbering{roman}%
+  \setcounter{page}{1}%
+  \pagestyle{PlainWaterMarkPage}%
+}
+
+%% Main matter: arabic numerals restarted at 1.
+\newcommand{\ThesisMainMatterPages}{%
+  \clearpage
+  \pagenumbering{arabic}%
+  \setcounter{page}{1}%
+  \pagestyle{WaterMarkPage}%
+}
+
+%% Pages that must carry no number at all (cover, title page).
+\newcommand{\ThesisUnnumberedPage}{\thispagestyle{EmptyWaterMarkPage}}

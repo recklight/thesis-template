@@ -1,0 +1,161 @@
+%% macros/figure_macros.tex -- the figure macro family.
+%%
+%% The whole family lives in this one file.  Float placement comes from
+%% \thesisFloatSpec ([template] float_spec in thesis.toml), and the
+%% r-suffixed macros below always clip what they trim.
+%%
+%% Naming scheme
+%% -------------
+%%   \fig      single figure, floating
+%%   \hfig     the same, placed exactly here (no float)
+%%   \mpfig    one panel of a multi-panel figure (inside a figure environment)
+%%
+%% Suffixes compose:  t = extra text under the caption
+%%                    r = trim and clip the graphic
+%%                    a = explicit vertical alignment for a panel
+%%
+%% Every macro takes the *width* first and the *file* second, except the
+%% alignment-aware panel macros where the file is third.  thesis-cli has
+%% the same table built in and uses it to find every graphic the document
+%% references.  A macro you add here also goes under [figures.macros] in
+%% thesis.toml (macro name = position of the file argument), or its
+%% graphics are missed.
+
+\makeatletter
+
+%% Default float placement. Overridden from thesis.toml via
+%% config/generated.tex ([template] float_spec).
+\newcommand{\thesisFloatSpec}{htbp}
+
+%% Opening a float with a placement specifier that lives in a macro needs
+%% one expansion step: LaTeX's float code walks the specifier token by token
+%% and would otherwise see the macro itself rather than "htbp".
+\newcommand{\ThesisBeginFloat}[1]{%
+  \edef\thesis@floatbegin{\noexpand\begin{#1}[\thesisFloatSpec]}%
+  \thesis@floatbegin}
+
+%% Non-floating figures and tables.  \@captype is set by hand so that
+%% \caption works outside a float environment.
+\newenvironment{figurehere}{\def\@captype{figure}\par\centering}{\par}
+\newenvironment{tablehere}{\def\@captype{table}\par\centering}{\par}
+
+%% ------------------------------------------------------------------
+%% Single figures, floating
+%% ------------------------------------------------------------------
+%% \fig{width}{file}{caption}{label}
+%%   width is a fraction of \columnwidth, e.g. 0.8
+\newcommand{\fig}[4]{%
+  \ThesisBeginFloat{figure}%
+    \centering
+    \includegraphics[width=#1\columnwidth]{#2}%
+    \caption{#3}\label{#4}%
+  \end{figure}}
+
+%% \figt{width}{file}{caption}{label}{extra text below the caption}
+\newcommand{\figt}[5]{%
+  \ThesisBeginFloat{figure}%
+    \centering
+    \includegraphics[width=#1\columnwidth]{#2}%
+    \caption{#3}\label{#4}%
+    \par\medskip
+    #5%
+  \end{figure}}
+
+%% \figtr{width}{file}{caption}{label}{trim}
+%%   trim is "left bottom right top", unitless values are big points (bp)
+\newcommand{\figtr}[5]{%
+  \ThesisBeginFloat{figure}%
+    \centering
+    \includegraphics[width=#1\columnwidth,trim={#5},clip=true]{#2}%
+    \caption{#3}\label{#4}%
+  \end{figure}}
+
+%% ------------------------------------------------------------------
+%% Single figures, placed exactly here
+%% ------------------------------------------------------------------
+\newcommand{\hfig}[4]{%
+  \begin{figurehere}%
+    \includegraphics[width=#1\columnwidth]{#2}%
+    \caption{#3}\label{#4}%
+  \end{figurehere}}
+
+\newcommand{\hfigt}[5]{%
+  \begin{figurehere}%
+    \includegraphics[width=#1\columnwidth]{#2}%
+    \caption{#3}\label{#4}%
+    \par\medskip
+    #5%
+  \end{figurehere}}
+
+\newcommand{\hfigtr}[5]{%
+  \begin{figurehere}%
+    \includegraphics[width=#1\columnwidth,trim={#5},clip=true]{#2}%
+    \caption{#3}\label{#4}%
+  \end{figurehere}}
+
+%% ------------------------------------------------------------------
+%% Panels of a multi-panel figure
+%% ------------------------------------------------------------------
+%% These go *inside* a figure environment, side by side:
+%%
+%%   \begin{figure}[htbp]\centering
+%%     \mpfig{0.45}{figures/left}{Left panel}{fig:left}\hfill
+%%     \mpfig{0.45}{figures/right}{Right panel}{fig:right}
+%%   \end{figure}
+%%
+%% The minipage is given a height of 1\totalheight so that panels of
+%% different heights still align on their bottom edge.
+
+%% \mpfig{width}{file}{caption}{label}
+\newcommand{\mpfig}[4]{%
+  \begin{minipage}[b][1\totalheight]{#1\columnwidth}%
+    \centering
+    \includegraphics[width=\columnwidth]{#2}%
+    \caption{#3}\label{#4}%
+  \end{minipage}}
+
+%% \mpfiga{width}{alignment}{file}{caption}{label}
+%%   alignment is b, c or t
+\newcommand{\mpfiga}[5]{%
+  \begin{minipage}[#2][1\totalheight]{#1\columnwidth}%
+    \centering
+    \includegraphics[width=\columnwidth]{#3}%
+    \caption{#4}\label{#5}%
+  \end{minipage}}
+
+%% \mpfigt{width}{file}{caption}{label}{extra text}
+\newcommand{\mpfigt}[5]{%
+  \begin{minipage}[b][1\totalheight]{#1\columnwidth}%
+    \centering
+    \includegraphics[width=\columnwidth]{#2}%
+    \caption{#3}\label{#4}%
+    \par\medskip
+    #5%
+  \end{minipage}}
+
+%% \mpfigtr{width}{file}{caption}{label}{trim}
+\newcommand{\mpfigtr}[5]{%
+  \begin{minipage}[b][1\totalheight]{#1\columnwidth}%
+    \centering
+    \includegraphics[width=\columnwidth,trim={#5},clip=true]{#2}%
+    \caption{#3}\label{#4}%
+  \end{minipage}}
+
+%% \mpfigtra{width}{alignment}{file}{caption}{label}{trim}
+\newcommand{\mpfigtra}[6]{%
+  \begin{minipage}[#2][1\totalheight]{#1\columnwidth}%
+    \centering
+    \includegraphics[width=\columnwidth,trim={#6},clip=true]{#3}%
+    \caption{#4}\label{#5}%
+  \end{minipage}}
+
+%% \mpfigabc{width}{file}
+%%   A panel with no caption of its own, for (a)(b)(c) sub-figures that
+%%   share one caption placed after the last panel.
+\newcommand{\mpfigabc}[2]{%
+  \begin{minipage}[b][1\totalheight]{#1\columnwidth}%
+    \centering
+    \includegraphics[width=\columnwidth]{#2}%
+  \end{minipage}}
+
+\makeatother

@@ -1,0 +1,142 @@
+%% config/definitions.tex -- default values and the names of every heading.
+%%
+%% This file does two things:
+%%
+%%   1. Declares every front-matter variable with a neutral default, so the
+%%      document still compiles when config/names.tex is incomplete.  That
+%%      file then overrides them with \renewcommand.
+%%   2. Sets the language of every standard heading in one place.
+%%
+%% Headings drift apart easily: "Fig." and "Table" in English, the chapter
+%% word in Chinese, the table-of-contents title back in English, each
+%% changed on a different day.  Pick \ThesisLabelsChinese or
+%% \ThesisLabelsEnglish below and every heading follows that choice.
+
+\makeatletter
+
+%% ------------------------------------------------------------------
+%% Front-matter defaults (overridden by config/names.tex)
+%% ------------------------------------------------------------------
+\newcommand{\cTitle}{論文中文題目}
+\newcommand{\eTitle}{THESIS TITLE IN ENGLISH}
+\newcommand{\myCname}{研究生姓名}
+\newcommand{\myEname}{Student Name}
+\newcommand{\myStudentId}{}
+\newcommand{\advisorCnameA}{指導教授姓名}
+\newcommand{\advisorEnameA}{Advisor Name}
+\newcommand{\advisorCnameB}{}
+\newcommand{\advisorEnameB}{}
+\newcommand{\advisorCnameC}{}
+\newcommand{\advisorEnameC}{}
+\newcommand{\univCname}{○○大學}
+\newcommand{\univEname}{UNIVERSITY NAME}
+\newcommand{\collCname}{}
+\newcommand{\collEname}{}
+\newcommand{\deptCname}{○○學系}
+\newcommand{\deptEname}{Department Name}
+\newcommand{\fullDeptEname}{Department of Something}
+\newcommand{\degreeCname}{碩士}
+\newcommand{\degreeEname}{Master of Science}
+\newcommand{\cYear}{一一四}
+\newcommand{\cMonth}{六}
+\newcommand{\eYear}{2025}
+\newcommand{\eMonth}{June}
+\newcommand{\ePlace}{City, Country}
+\newcommand{\cKeywords}{關鍵詞}
+\newcommand{\eKeywords}{keywords}
+
+%% ------------------------------------------------------------------
+%% Blank-field test
+%% ------------------------------------------------------------------
+%% \ThesisIfBlank{\macro}{what to do when empty}{what to do otherwise}
+%%
+%% This is how an unused co-advisor slot disappears completely instead of
+%% leaving an empty line on the cover.  The argument must expand to plain
+%% text; that is true of every field in config/names.tex.
+\newcommand{\ThesisIfBlank}[3]{%
+  \edef\thesis@blanktest{#1}%
+  \ifx\thesis@blanktest\@empty#2\else#3\fi}
+
+%% \ThesisSpread{width}{text} -- stretch text across a fixed width.
+%%
+%% Used for the degree line on the cover, where the convention is to
+%% space the characters out to a common width.
+\newcommand{\ThesisSpread}[2]{\makebox[#1][s]{#2}}
+
+%% ------------------------------------------------------------------
+%% Heading names
+%% ------------------------------------------------------------------
+\newcommand{\ThesisLabelsChinese}{%
+  \renewcommand{\contentsname}{目錄}%
+  \renewcommand{\listfigurename}{圖目錄}%
+  \renewcommand{\listtablename}{表目錄}%
+  \renewcommand{\bibname}{參考文獻}%
+  \renewcommand{\figurename}{圖}%
+  \renewcommand{\tablename}{表}%
+  \renewcommand{\chaptername}{章}%
+  \renewcommand{\appendixname}{附錄}%
+  \renewcommand{\nameInnerCover}{書名頁}%
+  \renewcommand{\nameCommitteeForm}{口試委員審定書}%
+  \renewcommand{\nameCopyrightForm}{授權書}%
+  \renewcommand{\nameCabstract}{中文摘要}%
+  \renewcommand{\nameEabstract}{英文摘要}%
+  \renewcommand{\nameAckn}{誌謝}%
+  \renewcommand{\nameSlist}{符號說明}%
+  \renewcommand{\nameVita}{自傳}%
+  \renewcommand{\nameKeywords}{關鍵詞}%
+}
+
+\newcommand{\ThesisLabelsEnglish}{%
+  \renewcommand{\contentsname}{Contents}%
+  \renewcommand{\listfigurename}{List of Figures}%
+  \renewcommand{\listtablename}{List of Tables}%
+  \renewcommand{\bibname}{Bibliography}%
+  \renewcommand{\figurename}{Fig.}%
+  \renewcommand{\tablename}{Table}%
+  \renewcommand{\chaptername}{Chapter}%
+  \renewcommand{\appendixname}{Appendix}%
+  \renewcommand{\nameInnerCover}{Title Page}%
+  \renewcommand{\nameCommitteeForm}{Committee Approval}%
+  \renewcommand{\nameCopyrightForm}{Authorisation}%
+  \renewcommand{\nameCabstract}{Abstract (Chinese)}%
+  \renewcommand{\nameEabstract}{Abstract}%
+  \renewcommand{\nameAckn}{Acknowledgements}%
+  \renewcommand{\nameSlist}{List of Symbols}%
+  \renewcommand{\nameVita}{Vita}%
+  \renewcommand{\nameKeywords}{Keywords}%
+}
+
+%% Names of the front- and back-matter sections.  They have to exist
+%% before a label set is picked below, since both sets \renewcommand them.
+\newcommand{\nameInnerCover}{書名頁}
+\newcommand{\nameCommitteeForm}{口試委員審定書}
+\newcommand{\nameCopyrightForm}{授權書}
+\newcommand{\nameCabstract}{中文摘要}
+\newcommand{\nameEabstract}{英文摘要}
+\newcommand{\nameAckn}{誌謝}
+\newcommand{\nameSlist}{符號說明}
+\newcommand{\nameVita}{自傳}
+\newcommand{\nameKeywords}{關鍵詞}
+
+%% ---- Pick one. ----------------------------------------------------
+\ThesisLabelsChinese
+
+%% ------------------------------------------------------------------
+%% Symbol list
+%% ------------------------------------------------------------------
+%% For content/symbols.tex: a list whose label box has a fixed width, taken
+%% from the widest symbol, so the descriptions line up in one column.  The
+%% pattern is the one in The LaTeX Companion.
+\newenvironment{SymEntry}[1]{%
+  \begin{list}{}{%
+    \settowidth{\labelwidth}{#1\hspace{1em}}%
+    \setlength{\leftmargin}{\labelwidth}%
+    \addtolength{\leftmargin}{\labelsep}%
+    \setlength{\itemsep}{0.2ex}%
+    \setlength{\parsep}{0pt}%
+    \renewcommand{\makelabel}[1]{##1\hfill}}%
+}{%
+  \end{list}%
+}
+
+\makeatother

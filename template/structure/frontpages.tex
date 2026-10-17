@@ -1,0 +1,152 @@
+%% structure/frontpages.tex -- cover through list of symbols.
+%%
+%% Order: cover, title page, committee approval, authorisation, Chinese
+%% abstract, English abstract, acknowledgements, contents, list of tables,
+%% list of figures, list of symbols.  All of them are built; while drafting,
+%% comment out this file's line in structure/chapters.tex to skip them.
+%%
+%% Optional fields (co-advisors, college, student number) are tested with
+%% \ThesisIfBlank and take up no space when empty, so a thesis with one
+%% advisor shows no gap where a second advisor would go.
+
+%% ==================================================================
+%% Cover
+%% ==================================================================
+\ThesisUnnumberedPage
+\begin{center}
+  {\setstretch{1.0}
+   \LARGE\bfseries
+   \univCname\\[0.6em]
+   \ThesisIfBlank{\collCname}{}{\collCname\\[0.6em]}%
+   \deptCname\\[0.6em]
+   %% The degree line is conventionally set with wide inter-character
+   %% spacing. \ThesisSpread stretches it to a fixed width; adjust the
+   %% width if your degree name is longer than two characters.
+   \ThesisSpread{4.5cm}{\degreeCname 論文}\\[3.5em]
+
+   \Large
+   \cTitle\\[1.5em]
+   \large\mdseries
+   \eTitle\\[4em]
+  }
+
+  {\setstretch{1.0}\large
+   研究生：\myCname\\[0.8em]
+   指導教授：\advisorCnameA\\[0.4em]
+   \ThesisIfBlank{\advisorCnameB}{}{指導教授：\advisorCnameB\\[0.4em]}%
+   \ThesisIfBlank{\advisorCnameC}{}{指導教授：\advisorCnameC\\[0.4em]}%
+  }
+
+  \vfill
+  {\large 中華民國\ \cYear\ 年\ \cMonth\ 月}
+\end{center}
+\clearpage
+
+%% ==================================================================
+%% Title page -- page numbering starts here, in roman numerals
+%% ==================================================================
+\ThesisFrontMatterPages
+\ThesisUnnumberedPage
+\begin{center}
+  {\setstretch{1.0}
+   \large
+   \univEname\\[0.6em]
+   \ThesisIfBlank{\collEname}{}{\collEname\\[0.6em]}%
+   \fullDeptEname\\[3.5em]
+
+   \LARGE
+   \eTitle\\[3em]
+
+   \large\mdseries
+   A thesis submitted in partial fulfilment\\
+   of the requirements for the degree of\\[0.6em]
+   \degreeEname\\[3em]
+
+   by\\[0.6em]
+   \myEname\\[0.6em]
+   \ThesisIfBlank{\myStudentId}{}{(\myStudentId)\\[0.6em]}%
+   \vspace{1em}
+
+   Advisor: \advisorEnameA\\[0.3em]
+   \ThesisIfBlank{\advisorEnameB}{}{Advisor: \advisorEnameB\\[0.3em]}%
+   \ThesisIfBlank{\advisorEnameC}{}{Advisor: \advisorEnameC\\[0.3em]}%
+  }
+  \vfill
+  {\large \ePlace\\[0.4em] \eMonth\ \eYear}
+\end{center}
+\clearpage
+
+%% ==================================================================
+%% Committee approval -- signed paper page, left blank on purpose
+%% ==================================================================
+\chapter*{\nameCommitteeForm}
+\addcontentsline{toc}{chapter}{\nameCommitteeForm}
+\begin{center}
+  \vspace*{4em}
+  （此頁由系所提供並簽名後掃描替換；建置時保留一頁空白。）
+\end{center}
+\clearpage
+
+%% ==================================================================
+%% Authorisation -- likewise
+%% ==================================================================
+\chapter*{\nameCopyrightForm}
+\addcontentsline{toc}{chapter}{\nameCopyrightForm}
+\begin{center}
+  \vspace*{4em}
+  （此頁由圖書館提供之授權書掃描替換；建置時保留一頁空白。）
+\end{center}
+\clearpage
+
+%% ==================================================================
+%% Abstracts
+%% ==================================================================
+\chapter*{\nameCabstract}
+\addcontentsline{toc}{chapter}{\nameCabstract}
+\input{content/cabstract.tex}
+\par\vspace{2em}
+\noindent\textbf{\nameKeywords：}\cKeywords
+\clearpage
+
+\chapter*{\nameEabstract}
+\addcontentsline{toc}{chapter}{\nameEabstract}
+\input{content/eabstract.tex}
+\par\vspace{2em}
+\noindent\textbf{Keywords: }\eKeywords
+\clearpage
+
+%% ==================================================================
+%% Acknowledgements
+%% ==================================================================
+\chapter*{\nameAckn}
+\addcontentsline{toc}{chapter}{\nameAckn}
+\input{content/acknowledgement.tex}
+\clearpage
+
+%% ==================================================================
+%% Contents and lists
+%% ==================================================================
+\tableofcontents
+\addcontentsline{toc}{chapter}{\contentsname}
+\clearpage
+
+\listoftables
+\addcontentsline{toc}{chapter}{\listtablename}
+\clearpage
+
+\listoffigures
+\addcontentsline{toc}{chapter}{\listfigurename}
+\clearpage
+
+%% ==================================================================
+%% List of symbols
+%% ==================================================================
+\chapter*{\nameSlist}
+\addcontentsline{toc}{chapter}{\nameSlist}
+\input{content/symbols.tex}
+\clearpage
+
+%% ==================================================================
+%% Main matter: arabic page numbers, restarted at 1
+%% ==================================================================
+\ThesisMainMatterPages

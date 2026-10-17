@@ -1,0 +1,63 @@
+%% config/names.tex -- everything about *this* thesis and its author.
+%%
+%% The cover, the title page and the spine take every name and date from
+%% this file.  Every value below is a placeholder; 'thesis-cli init
+%% --interactive' fills in the common ones, and 'thesis-cli init' reports
+%% which ones are still untouched.
+%%
+%% An optional field left empty ({}) disappears from the layout: the front
+%% matter tests each one and drops the whole line, so an unused co-advisor
+%% slot leaves no gap on the page.
+
+%% ---- Title -------------------------------------------------------
+%% Chinese title, as it appears on the cover.
+\renewcommand{\cTitle}{論文中文題目}
+%% English title, conventionally in capitals on the title page.
+\renewcommand{\eTitle}{THESIS TITLE IN ENGLISH}
+
+%% ---- Author ------------------------------------------------------
+\renewcommand{\myCname}{研究生姓名}
+\renewcommand{\myEname}{Student Name}
+%% Student number, if your institution prints it. Leave empty to omit.
+\renewcommand{\myStudentId}{}
+
+%% ---- Advisors ----------------------------------------------------
+%% The first advisor is required; B and C are co-advisors and are dropped
+%% from the page when left empty.
+\renewcommand{\advisorCnameA}{指導教授姓名}
+\renewcommand{\advisorEnameA}{Advisor Name}
+\renewcommand{\advisorCnameB}{}
+\renewcommand{\advisorEnameB}{}
+\renewcommand{\advisorCnameC}{}
+\renewcommand{\advisorEnameC}{}
+
+%% ---- Institution -------------------------------------------------
+\renewcommand{\univCname}{○○大學}
+\renewcommand{\univEname}{UNIVERSITY NAME}
+%% College/faculty. Leave empty if your cover does not show one.
+\renewcommand{\collCname}{}
+\renewcommand{\collEname}{}
+\renewcommand{\deptCname}{○○學系}
+\renewcommand{\deptEname}{Department Name}
+%% Full English department name for the title page, e.g.
+%% "Department of Electrical Engineering".
+\renewcommand{\fullDeptEname}{Department of Something}
+
+%% ---- Degree ------------------------------------------------------
+\renewcommand{\degreeCname}{碩士}
+\renewcommand{\degreeEname}{Master of Science}
+
+%% ---- Dates -------------------------------------------------------
+%% Chinese (Republic) year and month, written out, e.g. 一一四 / 六.
+\renewcommand{\cYear}{一一四}
+\renewcommand{\cMonth}{六}
+%% Western year and month, e.g. 2025 / June.
+\renewcommand{\eYear}{2025}
+\renewcommand{\eMonth}{June}
+%% Place printed under the English date, e.g. "Taipei, Taiwan".
+\renewcommand{\ePlace}{City, Country}
+
+%% ---- Keywords ----------------------------------------------------
+%% Printed at the end of the abstracts. Separate with commas.
+\renewcommand{\cKeywords}{關鍵詞一、關鍵詞二、關鍵詞三}
+\renewcommand{\eKeywords}{keyword one, keyword two, keyword three}

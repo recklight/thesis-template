@@ -1,0 +1,34 @@
+%% chapters/ch2_background.tex
+
+\chapter{文獻探討}
+\label{ch:background}
+
+\section{相關研究}
+\label{sec:related-work}
+
+這一節回顧與本研究相關的既有工作。多筆文獻可以一次引用，
+例如 \cite{knuth1984texbook, mittelbach2004companion, shannon1948mathematical}，
+\verb|cite| 套件會把三筆以上的連號合併成區間。
+
+\section{理論基礎}
+\label{sec:theory}
+
+這一節整理後續章節會用到的理論。多行推導建議用 \verb|align| 環境，
+只在需要交互參考的行加 \verb|\label|：
+
+\begin{align}
+  X(f) &= \int_{-\infty}^{\infty} x(t)\, e^{-j 2\pi f t}\, \mathrm{d}t
+  \label{eq:fourier} \\
+  x(t) &= \int_{-\infty}^{\infty} X(f)\, e^{ j 2\pi f t}\, \mathrm{d}f
+  \label{eq:inverse-fourier}
+\end{align}
+
+式 \eqref{eq:fourier} 與式 \eqref{eq:inverse-fourier} 互為反轉換；
+資訊量的定義見 \cite{shannon1948mathematical}，
+離散版本的快速演算法見 \cite{cooley1965algorithm}。
+
+\subsection{符號慣例}
+\label{subsec:notation}
+
+全篇使用的符號整理於前頁的符號說明。向量以粗體小寫表示，
+矩陣以粗體大寫表示。

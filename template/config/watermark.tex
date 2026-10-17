@@ -1,0 +1,135 @@
+%% config/watermark.tex -- the institutional watermark.
+%%
+%% The image is stored once in a save box and stamped through the *centre
+%% header* of a fancyhdr page style.  From the header it reaches every page
+%% without touching the page body: the picture environment has zero size,
+%% so nothing in the text is displaced, and the \put coordinate moves the
+%% image down into the middle of the type block.
+%% The technique is the one described in Reckdahl's epslatex notes.
+%%
+%% Three modes, selected by thesis.toml ([template] watermark) through
+%% config/generated.tex:
+%%
+%%   all       every page carries the watermark
+%%   selected  only the pages where \ThesisWatermarkThisPage is written
+%%   off       no watermark at all, and the image is never loaded
+%%
+%% The size and position are the length and macros below, which
+%% config/generated.tex sets from thesis.toml, so another institution's
+%% mark is fitted there without editing this file.
+
+%% ---- Geometry -----------------------------------------------------
+%% Default width 5.1cm: a 200x200 px mark at 100 dpi is 5.08 cm across.
+\newlength{\thesisWatermarkWidth}
+\setlength{\thesisWatermarkWidth}{5.1cm}
+
+%% Offset from the centre header, in inches (\unitlength is set to 1in
+%% before the picture environment is opened).
+\newcommand{\thesisWatermarkX}{-1}
+\newcommand{\thesisWatermarkY}{-6.2}
+
+%% Path relative to the project root, written WITHOUT an extension so that
+%% \DeclareGraphicsExtensions can pick whichever format the engine prefers.
+\newcommand{\thesisWatermarkImage}{figures/watermark_placeholder}
+
+\makeatletter
+
+\newsavebox{\thesisWatermarkBox}
+\newif\ifthesisWatermarkLoaded \thesisWatermarkLoadedfalse
+\newif\ifthesisWatermarkEverywhere \thesisWatermarkEverywherefalse
+\newif\ifthesisWatermarkThisPage \thesisWatermarkThisPagefalse
+
+\newcommand{\ThesisLoadWatermark}{%
+  \ifthesisWatermarkLoaded\else
+    \sbox{\thesisWatermarkBox}{%
+      \includegraphics[keepaspectratio,width=\thesisWatermarkWidth]{%
+        \thesisWatermarkImage}}%
+    \global\thesisWatermarkLoadedtrue
+  \fi}
+
+\newcommand{\thesis@stampwatermark}{%
+  \setlength{\unitlength}{1in}%
+  \begin{picture}(0,0)
+    \put(\thesisWatermarkX,\thesisWatermarkY){\usebox{\thesisWatermarkBox}}
+  \end{picture}}
+
+%% Called from the page header.  In "selected" mode it draws the mark only
+%% when \ThesisWatermarkThisPage has asked for it, and clears the request
+%% once the page is out, so the next page is unmarked again.
+\newcommand{\ThesisPlaceWatermark}{%
+  \ifthesisWatermarkLoaded
+    \ifthesisWatermarkEverywhere
+      \thesis@stampwatermark
+    \else\ifthesisWatermarkThisPage
+      \thesis@stampwatermark
+      \global\thesisWatermarkThisPagefalse
+    \fi\fi
+  \fi}
+
+%% Mark the current page in "selected" mode, e.g. right after
+%% \ThesisUnnumberedPage on the cover.  Has no effect in the other modes.
+\newcommand{\ThesisWatermarkThisPage}{\global\thesisWatermarkThisPagetrue}
+
+%% ---- Page styles --------------------------------------------------
+%% All three carry the mark in the centre header and have no rules.
+%%   WaterMarkPage       page number centred in the footer (main matter)
+%%   PlainWaterMarkPage  the same layout, used for the front matter
+%%   EmptyWaterMarkPage  no page number (cover and title page)
+\fancypagestyle{WaterMarkPage}{%
+  \fancyhf{}%
+  \fancyhead[C]{\ThesisPlaceWatermark}%
+  \fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+\fancypagestyle{PlainWaterMarkPage}{%
+  \fancyhf{}%
+  \fancyhead[C]{\ThesisPlaceWatermark}%
+  \fancyfoot[C]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+\fancypagestyle{EmptyWaterMarkPage}{%
+  \fancyhf{}%
+  \fancyhead[C]{\ThesisPlaceWatermark}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+%% ---- Mode switch --------------------------------------------------
+\def\thesis@wm@all{all}
+\def\thesis@wm@off{off}
+
+%% \chapter switches its first page to the plain style, so plain gets the
+%% mark too; without this, chapter opening pages would go unmarked in both
+%% "all" and "selected" mode.
+\newcommand{\thesis@markplainpages}{%
+  \fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyhead[C]{\ThesisPlaceWatermark}%
+    \fancyfoot[C]{\thepage}%
+    \renewcommand{\headrulewidth}{0pt}%
+    \renewcommand{\footrulewidth}{0pt}%
+  }}
+
+%% \ThesisWatermark{all|selected|off}, written once by config/generated.tex.
+%% Nothing is loaded before this call, so "off" never touches the image.
+\newcommand{\ThesisWatermark}[1]{%
+  \def\thesis@wm@arg{#1}%
+  \ifx\thesis@wm@arg\thesis@wm@off
+    \thesisWatermarkEverywherefalse
+    \renewcommand{\ThesisPlaceWatermark}{}%
+  \else
+    \ThesisLoadWatermark
+    \thesis@markplainpages
+    \ifx\thesis@wm@arg\thesis@wm@all
+      \thesisWatermarkEverywheretrue
+      \pagestyle{WaterMarkPage}%
+    \else
+      \thesisWatermarkEverywherefalse
+    \fi
+  \fi}
+
+\makeatother

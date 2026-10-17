@@ -1,0 +1,144 @@
+[build-system]
+requires = ["hatchling>=1.26.3"]
+build-backend = "hatchling.build"
+
+[project]
+name = "thesis-cli"
+version = "0.1.0"
+description = "LaTeX template for a master's thesis in Traditional Chinese, with a build and audit CLI: compile, check references, resolve figures, count CJK words, clean up."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "RL" }]
+maintainers = [{ name = "RL" }]
+keywords = ["latex", "thesis", "bibtex", "cjk", "build-tool"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: Chinese (Traditional)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Text Processing :: Markup :: LaTeX",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.24",
+    "typer>=0.12",
+    "rich>=13.0",
+    "tomli>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+thesis-cli = "thesis_cli.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/recklight/thesis-template"
+Repository = "https://github.com/recklight/thesis-template"
+Issues = "https://github.com/recklight/thesis-template/issues"
+Changelog = "https://github.com/recklight/thesis-template/blob/master/CHANGELOG.md"
+
+# ---------------------------------------------------------------------------
+# Packaging
+# ---------------------------------------------------------------------------
+[tool.hatch.build.targets.wheel]
+packages = ["src/thesis_cli"]
+
+# The template sits at the top level so it is easy to browse, and is copied
+# into the wheel so that 'thesis-cli init' also works after a plain pip
+# install, without a clone.
+[tool.hatch.build.targets.wheel.force-include]
+"template" = "thesis_cli/_template"
+
+[tool.hatch.build.targets.sdist]
+# tests/ is shipped, so the files it reads go along: CITATION.cff for the
+# version check, CHANGELOG.md and CONTRIBUTING.md for the language checks.
+include = [
+    "src/",
+    "template/",
+    "tests/",
+    "examples/",
+    "README.md",
+    "README.zh-TW.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "CITATION.cff",
+    "LICENSE",
+    "make_snippets.py",
+]
+
+# ---------------------------------------------------------------------------
+# Linting
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+src = ["src", "tests", "examples"]
+
+[tool.ruff.format]
+# Ruff 0.16+ also formats code blocks in Markdown; the README examples are aligned by hand.
+exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # pyflakes
+    "I",    # import sorting
+    "UP",   # pyupgrade (bounded by target-version = py310)
+    "B",    # bugbear
+    "C4",   # comprehensions
+    "SIM",  # simplifications
+    "RET",  # return statements
+    "PTH",  # prefer pathlib
+    "N",    # naming
+    "ARG",  # unused arguments
+    "TID",  # tidy imports
+    "RUF",  # ruff-specific
+]
+ignore = [
+    "E501",    # line length is enforced by the formatter, not the linter
+    "B008",    # typer declares defaults by calling typer.Option(...)
+    "RUF001",  # ambiguous unicode: this project is deliberately bilingual
+    "RUF002",
+    "RUF003",
+    # Relative imports inside the package are deliberate: they keep the
+    # package self-contained and renameable.
+    "TID252",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# A test may take a fixture only for its side effect (ARG001, ARG002) or put
+# an acronym in capitals in its name (N802).
+"tests/*" = ["ARG001", "ARG002", "N802"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["thesis_cli"]
+
+# ---------------------------------------------------------------------------
+# Tests
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+minversion = "8.0"
+# src is listed so that the doctests in the docstrings are executed as part
+# of the suite: an example that stops working fails the tests instead of
+# going stale.
+testpaths = ["tests", "src"]
+pythonpath = ["src", "tests"]
+addopts = "-ra --strict-markers --strict-config --doctest-modules"
+doctest_optionflags = ["NORMALIZE_WHITESPACE", "ELLIPSIS"]
+filterwarnings = ["error"]
+markers = [
+    "requires_latex: needs a working TeX installation; skipped when absent",
+]

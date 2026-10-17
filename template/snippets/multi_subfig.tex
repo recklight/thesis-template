@@ -1,0 +1,15 @@
+% Three panels sharing ONE caption, labelled (a) (b) (c).
+% \mpfigabc{width}{file} draws a panel with no caption of its own.
+\begin{figure}[htbp]
+  \centering
+  \mpfigabc{0.3}{figures/example_fig}\hfill
+  \mpfigabc{0.3}{figures/example_fig}\hfill
+  \mpfigabc{0.3}{figures/example_fig}
+  \\[0.5em]
+  \makebox[0.3\columnwidth]{(a)}\hfill
+  \makebox[0.3\columnwidth]{(b)}\hfill
+  \makebox[0.3\columnwidth]{(c)}
+  \caption{One caption describing all three panels: (a) first, (b) second,
+           (c) third.}
+  \label{fig:abc}
+\end{figure}

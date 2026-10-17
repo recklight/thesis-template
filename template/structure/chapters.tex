@@ -1,0 +1,21 @@
+%% structure/chapters.tex -- the assembly list.
+%%
+%% What the thesis is made of, in order.  Comment a line out to leave that
+%% part out of the next build.  While drafting one chapter, switch the
+%% front and back matter off and each build gets faster.
+%%
+%% 'thesis-cli stats' and 'thesis-cli check-refs' follow the same \input
+%% chain, so whatever you switch off here also drops out of the word count
+%% and the reference audit.  That is on purpose: the reports describe the
+%% document the build would produce.
+
+\input{structure/frontpages.tex}
+
+%% ---- Main matter --------------------------------------------------
+\input{chapters/ch1_introduction.tex}
+\input{chapters/ch2_background.tex}
+\input{chapters/ch3_method.tex}
+\input{chapters/ch4_results.tex}
+\input{chapters/ch5_conclusion.tex}
+
+\input{structure/backpages.tex}

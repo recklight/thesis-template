@@ -1,0 +1,27 @@
+%% chapters/ch4_results.tex
+
+\chapter{實驗結果與討論}
+\label{ch:results}
+
+\section{結果}
+\label{sec:results}
+
+這一節呈現實驗結果。若圖的邊緣有多餘留白，可用 \verb|\figtr| 裁切，
+第五個參數是 \verb|左 下 右 上| 四個值，未標單位時以大點（bp）計：
+
+\figtr{0.6}{figures/example_fig}{裁切後的示範圖。}{fig:trimmed}{0 0 0 0}
+
+圖 \ref{fig:trimmed} 示範裁切參數的寫法。
+
+\section{討論}
+\label{sec:discussion}
+
+這一節討論結果的意義與限制，並與既有工作 \cite{reckdahl2006graphics}
+及第 \ref{ch:background} 章的理論基礎相互對照。
+
+程式碼片段可用 \verb|lstlisting| 環境，裡面的內容不算進 thesis-cli stats 的字數：
+
+\begin{lstlisting}
+thesis-cli build --strict
+thesis-cli check-refs --strict
+\end{lstlisting}

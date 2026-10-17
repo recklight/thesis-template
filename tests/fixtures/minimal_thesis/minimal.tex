@@ -1,0 +1,24 @@
+% Minimal CJK document used by 'thesis-cli doctor' as a smoke test.
+% It is deliberately tiny: if this does not compile, nothing else will.
+\documentclass[12pt,a4paper]{article}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage{CJKutf8}
+  \newcommand{\SmokeBegin}{\begin{CJK}{UTF8}{bsmi}}
+  \newcommand{\SmokeEnd}{\end{CJK}}
+\else
+  \usepackage{xeCJK}
+  \newcommand{\SmokeBegin}{}
+  \newcommand{\SmokeEnd}{}
+\fi
+\usepackage{amsmath}
+\begin{document}
+\SmokeBegin
+中文編排測試：一二三四五六七八九十。
+This line mixes English with 中文 in one paragraph.
+\begin{equation}
+  E = mc^{2}
+\end{equation}
+\SmokeEnd
+\end{document}

@@ -1,0 +1,43 @@
+name: 錯誤回報
+description: thesis-cli 或模板的行為不對
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 發生什麼事
+      description: 你預期會怎樣，實際上又發生了什麼。
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 重現步驟
+      description: 能重現問題的指令；跟設定有關的話，附上 thesis.toml 的相關段落。編譯的問題請一併寫上 TeX 發行版與版本。
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: traceback
+    attributes:
+      label: 完整錯誤訊息
+      description: 有 traceback 就整段貼上。編譯失敗的話，貼 .log 裡第一個錯誤前後的幾行。
+      render: text
+
+  - type: input
+    id: python-version
+    attributes:
+      label: Python 版本
+      placeholder: "3.10.13"
+    validations:
+      required: true
+
+  - type: input
+    id: os
+    attributes:
+      label: 作業系統
+      placeholder: "Windows 11 / Ubuntu 22.04 / macOS 14"
+    validations:
+      required: true

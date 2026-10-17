@@ -1,0 +1,9 @@
+% Side-by-side figures with explicit vertical alignment.
+% \mpfiga{width}{alignment}{file}{caption}{label}
+%   alignment: b (bottom), c (centre), t (top)
+\begin{figure}[htbp]
+  \centering
+  \mpfiga{0.45}{t}{figures/example_fig}{Top-aligned.}{fig:top}%
+  \hfill
+  \mpfiga{0.45}{b}{figures/example_fig}{Bottom-aligned.}{fig:bottom}
+\end{figure}

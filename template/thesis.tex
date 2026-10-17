@@ -1,0 +1,95 @@
+%% thesis.tex -- main document.
+%%
+%% Compile it with:  thesis-cli build
+%%
+%% Do not run the TeX engine on any other file in this project.  Apart from
+%% the spine (structure/coverbridge.tex, built with --target spine), every
+%% other .tex file here is a fragment without a preamble, and compiling one
+%% directly only produces a screenful of "Undefined control sequence".
+%% 'thesis-cli build' refuses such a target for that reason.
+%%
+%% The engine is chosen in thesis.toml, not here.  config/cjk.tex asks the
+%% iftex package which engine is running and loads the matching CJK setup.
+
+\documentclass[12pt,a4paper]{thesis_report}
+
+%% On the latex+dvipdfmx route pdfTeX writes DVI (\pdfoutput is 0), and
+%% graphicx, xcolor and hyperref would then pick their dvips drivers:
+%% graphicx cannot size a PNG that way, and hyperref's dvips links are not
+%% what dvipdfmx reads.  Naming the dvipdfmx driver before the packages
+%% load avoids both.  pdflatex and xelatex skip this block.
+\usepackage{iftex}
+\ifPDFTeX\ifnum\pdfoutput<1
+  \PassOptionsToPackage{dvipdfmx}{graphicx}
+  \PassOptionsToPackage{dvipdfmx}{xcolor}
+  \PassOptionsToPackage{dvipdfmx}{hyperref}
+\fi\fi
+
+%% ------------------------------------------------------------------
+%% Packages
+%% ------------------------------------------------------------------
+\usepackage{morefloats}      % raise the limit on pending floats
+\usepackage{cite}            % three or more consecutive numbers become [1–4]
+\usepackage[
+  tmargin=3.5cm, bmargin=2cm,
+  lmargin=4cm,   rmargin=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{epstopdf}        % accept .eps on the PDF-producing engines
+\usepackage{caption}
+\usepackage{subcaption}      % sub-figures
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{setspace}
+
+%% CJK support, chosen from the engine. Must come before hyperref so that
+%% the font machinery is in place when hyperref builds the bookmarks.
+\input{config/cjk.tex}
+
+\usepackage[
+  bookmarks=true,
+  bookmarksnumbered=true,
+  colorlinks=false,
+  pdfborder={0 0 0}]{hyperref}
+
+%% ------------------------------------------------------------------
+%% Layout
+%% ------------------------------------------------------------------
+\newcommand{\mybaselinestretch}{1.5}
+\renewcommand{\baselinestretch}{\mybaselinestretch}
+\setlength{\parskip}{2ex}
+\setlength{\parindent}{0pt}
+
+\graphicspath{{figures/}}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg,.eps}
+
+%% ------------------------------------------------------------------
+%% Project configuration
+%% ------------------------------------------------------------------
+\input{config/definitions.tex}       % names of every standard heading
+\input{config/names.tex}             % your title, name, department, dates
+\input{config/chapter_numbering.tex} % the three \ThesisTocStyle* macros
+\input{config/watermark.tex}         % watermark box and page styles
+\input{config/headerfooter.tex}      % running heads and page numbers
+\input{macros/figure_macros.tex}     % \fig, \mpfig and relatives
+
+%% Written by 'thesis-cli build' from the [template] section of
+%% thesis.toml: the table-of-contents numbering style, the float placement
+%% and the watermark.  Do not edit it by hand; the next build overwrites it.
+\input{config/generated.tex}
+
+\hypersetup{pdftitle={\cTitle}, pdfauthor={\myCname}}
+
+%% ------------------------------------------------------------------
+\begin{document}
+\ThesisBeginCJK
+
+\input{structure/chapters.tex}
+
+\clearpage
+\ThesisEndCJK
+\end{document}

@@ -1,0 +1,35 @@
+%% chapters/ch1_introduction.tex
+%%
+%% Replace everything below with your own text.  What is here is a skeleton
+%% that exercises the template: a chapter, two sections, a citation,
+%% cross-references, a figure and an equation.  Keep it until you have
+%% written enough to replace it, so that 'thesis-cli build' has something
+%% to compile.
+
+\chapter{緒論}
+\label{ch:introduction}
+
+\section{研究背景}
+\label{sec:background}
+
+這一節說明研究的背景與動機。排版模板本身不規定內容，只提供結構；
+引用文獻的寫法是 \cite{lamport1994latex}，交互參考的寫法是
+第 \ref{sec:objectives} 節。
+
+\section{研究目的}
+\label{sec:objectives}
+
+這一節說明研究要回答的問題。圖的插入方式如圖 \ref{fig:example} 所示，
+使用 macros/figure\_macros.tex 定義的 \verb|\fig| 巨集，
+第一個參數是寬度（版心寬度的倍數），第二個參數是檔名。
+
+\fig{0.6}{figures/example_fig}{示範用圖說。實際撰寫時請放上自己的圖。}{fig:example}
+
+數學式的編號會自動產生，並可用 \verb|\eqref| 交互參考：
+
+\begin{equation}
+  \label{eq:example}
+  y(n) = \sum_{k=0}^{N-1} h(k)\, x(n-k)
+\end{equation}
+
+式 \eqref{eq:example} 是一個有限脈衝響應濾波器的定義。

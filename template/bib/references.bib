@@ -1,0 +1,82 @@
+% bib/references.bib -- demonstration bibliography.
+%
+% Seven entries covering the common types (book, article, misc), all of
+% them real works that you can verify. They exist to show the required
+% fields for each type and to give 'thesis-cli check-refs' something to
+% audit; replace them with your own.
+%
+% What check-refs enforces here:
+%   * every article entry has author, title, journal and year
+%   * every book entry has author (or editor), title, publisher and year
+%   * no name list ends with a stray comma (BibTeX only notes it in the .blg)
+%   * the year field holds a year, not a whole citation
+%   * no key is defined twice with different content
+%
+% Keys use the lastname+year+word convention. Any consistent scheme works;
+% what matters is that a key never changes once it has been cited.
+
+@BOOK{lamport1994latex,
+  author    = {Leslie Lamport},
+  title     = {{\LaTeX}: A Document Preparation System},
+  edition   = {2nd},
+  publisher = {Addison-Wesley},
+  address   = {Reading, MA},
+  year      = {1994},
+  isbn      = {0-201-52983-1}
+}
+
+@BOOK{knuth1984texbook,
+  author    = {Donald E. Knuth},
+  title     = {The {\TeX}book},
+  publisher = {Addison-Wesley},
+  address   = {Reading, MA},
+  year      = {1984},
+  isbn      = {0-201-13447-0}
+}
+
+@BOOK{mittelbach2004companion,
+  author    = {Frank Mittelbach and Michel Goossens},
+  title     = {The {\LaTeX} Companion},
+  edition   = {2nd},
+  publisher = {Addison-Wesley},
+  address   = {Boston, MA},
+  year      = {2004},
+  isbn      = {0-201-36299-6}
+}
+
+@ARTICLE{shannon1948mathematical,
+  author  = {Claude E. Shannon},
+  title   = {A Mathematical Theory of Communication},
+  journal = {The Bell System Technical Journal},
+  volume  = {27},
+  number  = {3},
+  pages   = {379--423},
+  year    = {1948}
+}
+
+@ARTICLE{cooley1965algorithm,
+  author  = {James W. Cooley and John W. Tukey},
+  title   = {An Algorithm for the Machine Calculation of Complex {Fourier} Series},
+  journal = {Mathematics of Computation},
+  volume  = {19},
+  number  = {90},
+  pages   = {297--301},
+  year    = {1965},
+  doi     = {10.1090/S0025-5718-1965-0178586-1}
+}
+
+@MISC{reckdahl2006graphics,
+  author       = {Keith Reckdahl},
+  title        = {Using Imported Graphics in {\LaTeX} and {pdfLaTeX}},
+  howpublished = {CTAN, epslatex documentation},
+  year         = {2006},
+  note         = {Version 3.0.1}
+}
+
+@MISC{unicode2023standard,
+  author       = {{The Unicode Consortium}},
+  title        = {The {Unicode} Standard, Version 15.1.0},
+  howpublished = {Unicode, Inc.},
+  year         = {2023},
+  note         = {See the East Asia chapter for the CJK Unified Ideographs blocks}
+}
